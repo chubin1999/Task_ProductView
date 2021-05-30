@@ -1,0 +1,54 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/** @var $block \Magento\Swatches\Block\Product\Renderer\Configurable */
+/** @var \Magento\Swatches\ViewModel\Product\Renderer\Configurable $configurableViewModel */
+$configurableViewModel = $block->getConfigurableViewModel()
+?>
+<div class="swatch-opt" data-role="swatch-options"></div>
+
+<!-- /*Add click chart*/ -->
+<div data-block="dropdown" class="minicart-wrapper">
+    <span style="cursor: pointer;" class="action" data-trigger="trigger" data-bind="i18n: 'Size chart'"></span>
+</div>
+<div class="block block-minicart"
+     data-mage-init='{
+        "dropdownDialog": {
+            "appendTo": "[data-block=dropdown]",
+            "triggerTarget":"[data-trigger=trigger]",
+            "timeout": 2000,
+            "closeOnMouseLeave": false,
+            "closeOnEscape": true,
+            "autoOpen": true,
+            "triggerClass": "active",
+            "parentClass": "active",
+            "buttons": []
+        }
+     }'>
+    <div id="minicart-content-wrapper">
+        Here is our content
+    </div>
+</div>
+<!-- /*End add click chart*/ -->
+
+<script type="text/x-magento-init">
+    {
+        "[data-role=swatch-options]": {
+            "Magento_Swatches/js/swatch-renderer": {
+                "jsonConfig": <?= /* @noEscape */ $swatchOptions = $block->getJsonConfig() ?>,
+                "jsonSwatchConfig": <?= /* @noEscape */ $swatchOptions = $block->getJsonSwatchConfig() ?>,
+                "mediaCallback": "<?= $block->escapeJs($block->escapeUrl($block->getMediaCallback())) ?>",
+                "gallerySwitchStrategy": "<?= $block->escapeJs($block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct')) ?: 'replace'; ?>",
+                "jsonSwatchImageSizeConfig": <?= /* @noEscape */ $block->getJsonSwatchSizeConfig() ?>,
+                "showTooltip": <?= $block->escapeJs($configurableViewModel->getShowSwatchTooltip()) ?>
+            }
+        },
+        "*" : {
+            "Magento_Swatches/js/catalog-add-to-cart": {}
+        }
+    }
+</script>

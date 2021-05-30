@@ -1,0 +1,29 @@
+<div data-block="dropdown" class="minicart-wrapper">
+        <span class="action" data-trigger="trigger" style="cursor: pointer;">size chart</span>
+</div>
+<div class="block block-minicart" data-role="dropdownDialog">
+    <div id="minicart-content-wrapper">
+        Here is our content
+    </div>
+</div>
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'dropdownDialog'
+        ], function($, dropdownDialog) {
+            'use strict';
+
+            $('.block-minicart').dropdownDialog({
+                appendTo: "[data-block=dropdown]",
+                triggerTarget: "[data-trigger=trigger]",
+                closeOnMouseLeave: false,
+                closeOnEscape: true,
+                timeout: 2000,
+                triggerClass: 'active',
+                parentClass: 'active',
+                buttons: []
+            });
+        }
+    );
+</script>
