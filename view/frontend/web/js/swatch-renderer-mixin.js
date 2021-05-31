@@ -39,10 +39,9 @@ define([
                 classes = this.options.classes,
                 chooseText = this.options.jsonConfig.chooseText,
                 showTooltip = this.options.showTooltip;
-
             $widget.optionsMap = {};
 
-            $.each(this.options.jsonConfig.attributes, function () {
+            $.each(this.options.jsonConfig.attributes, function (key, value) {
                 var item = this;
                     $widget.optionsMap[item.id] = {};
 
@@ -75,23 +74,8 @@ define([
                         '<span id="' + controlLabelId + '" class="' + classes.attributeLabelClass + '">' +
                         $('<i></i>').text(item.label).html() +
                         '</span>' +
-                        '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>'
-
-                        +'<div data-block="dropdown" class="minicart-wrapper">' +
-                        '<span class="action" data-trigger="trigger" style="cursor: pointer;">'+'Content Size Chart'+ '</span>'+'</div>'
-                        +'<div class="block block-minicart" data-role="dropdownDialog">'
-                        +'<div id ="minicart-content-wrapper">'+$widget.options.jsonConfig.getattribute+'</div>'+'</div>';
+                        '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>';                    
                 }
-                $('.block-minicart').dropdownDialog({
-                appendTo: "[data-block=dropdown]",
-                triggerTarget: "[data-trigger=trigger]",
-                closeOnMouseLeave: false,
-                closeOnEscape: true,
-                timeout: 2000,
-                triggerClass: 'active',
-                parentClass: 'active',
-                buttons: []
-                });
 
                 if ($widget.inProductList) {
                     $widget.productForm.append(input);
@@ -102,23 +86,60 @@ define([
                 }
 
                 // Create new control
-                container.append(
-                    '<div class="' + classes.attributeClass + ' ' + item.code + '" ' +
-                         'attribute-code="' + item.code + '" ' +
-                         'attribute-id="' + item.id + '">' +
-                        label +
-                        '<div aria-activedescendant="" ' +
-                             'tabindex="0" ' +
-                             'aria-invalid="false" ' +
-                             'aria-required="true" ' +
-                             'role="listbox" ' + listLabel +
-                             'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
-                            options + select +
-                        '</div>' + input +
-                    '</div>'
-                );
+                if($widget.options.jsonConfig.attributes[key].code == 'size' && $widget.options.jsonConfig.getattribute != null) {
+                    container.append(
+                        '<div class="' + classes.attributeClass + ' ' + item.code + '" ' +
+                            'attribute-code="' + item.code + '" ' +
+                            'attribute-id="' + item.id + '">' +
+                        //Show attribute chart
+                        $widget.options.jsonConfig.attributes[key].label + '<div data-block="dropdown" class="minicart-wrapper">' +
+                        '<span class="action" data-trigger="trigger" style="cursor: pointer;">'+'Content Size Chart'+ '</span>'+'</div>'
+                        +'<div class="block block-minicart" data-role="dropdownDialog">'
+                        +'<div class ="minicart-content-wrapper">'+ $widget.options.jsonConfig.getattribute +'</div>'+'</div>' +
+                                '<div aria-activedescendant="" ' +
+                                     'tabindex="0" ' +
+                                     'aria-invalid="false" ' +
+                                     'aria-required="true" ' +
+                                     'role="listbox" ' + listLabel +
+                                     'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
+                                    options + select +
+                                '</div>' + input +
+                            '</div>'
+                        );
+                    }
+                else {
+                    container.append(
+                        '<div class="' + classes.attributeClass + ' ' + item.code + '" ' +
+                            'attribute-code="' + item.code + '" ' +
+                            'attribute-id="' + item.id + '">' +
+                                 
+                            $widget.options.jsonConfig.attributes[key].label +
+                            '<div aria-activedescendant="" ' +
+                                     'tabindex="0" ' +
+                                     'aria-invalid="false" ' +
+                                     'aria-required="true" ' +
+                                     'role="listbox" ' + listLabel +
+                                     'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
+                                    options + select +
+                            '</div>' + input +
+                        '</div>'
+                    );
+                }
+                $('.block-minicart').dropdownDialog({
+                    appendTo: "[data-block=dropdown]",
+                    triggerTarget: "[data-trigger=trigger]",
+                    closeOnMouseLeave: false,
+                    closeOnEscape: true,
+                    timeout: 2000,
+                    triggerClass: 'active',
+                    parentClass: 'active',
+                    buttons: []
+                });
+                // End create new control
 
-                $widget.optionsMap[item.id] = {};
+            $widget.optionsMap[item.id] = {};
+
+
 
                 // Aggregate options array to hash (key => value)
                 $.each(item.options, function () {
@@ -133,6 +154,7 @@ define([
                     }
                 });
             });
+
 
             if (showTooltip === 1) {
                 // Connect Tooltip
@@ -257,8 +279,6 @@ define([
                     html += '<div class="' + optionClass + '" ' + attr + '>' + label + '</div>';
                 }
             });
-            console.log($widget);
-            console.log($widget.options.jsonConfig.getattribute);
             return html;
         },
 
