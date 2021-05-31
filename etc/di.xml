@@ -3,4 +3,7 @@
 	<type name="Magento\Swatches\Block\Product\Renderer\Configurable">
 		<plugin name="AHT_ProductView::productName" type="AHT\ProductView\Plugin\PluginConfig" sortOrder="1" />
 	</type>
+	<type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
+        <plugin name="vendor_configurable_product_configurable" type="AHT\ProductView\Plugin\Product\View\Type\Configurable" sortOrder="1"/>
+    </type>    
 </config>

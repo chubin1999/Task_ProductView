@@ -1,7 +1,8 @@
 define([
     'jquery',
-    'Magento_Catalog/js/price-utils'
-], function ($, priceUtils) {
+    'Magento_Catalog/js/price-utils',
+    'dropdownDialog'
+], function ($, priceUtils, dropdownDialog) {
     'use strict';
     return function (widget) {
         console.log('Hello from SwatchExtend');
@@ -77,10 +78,20 @@ define([
                         '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>'
 
                         +'<div data-block="dropdown" class="minicart-wrapper">' +
-                        '<span class="action" data-trigger="trigger" style="cursor: pointer;">'+'size chart'+ '</span>'+'</div>'
+                        '<span class="action" data-trigger="trigger" style="cursor: pointer;">'+'Content Size Chart'+ '</span>'+'</div>'
                         +'<div class="block block-minicart" data-role="dropdownDialog">'
-                        +'<div id ="minicart-content-wrapper">'+'Here is our content'+'</div>'+'</div>';
+                        +'<div id ="minicart-content-wrapper">'+$widget.options.jsonConfig.getattribute+'</div>'+'</div>';
                 }
+                $('.block-minicart').dropdownDialog({
+                appendTo: "[data-block=dropdown]",
+                triggerTarget: "[data-trigger=trigger]",
+                closeOnMouseLeave: false,
+                closeOnEscape: true,
+                timeout: 2000,
+                triggerClass: 'active',
+                parentClass: 'active',
+                buttons: []
+                });
 
                 if ($widget.inProductList) {
                     $widget.productForm.append(input);
@@ -247,6 +258,7 @@ define([
                 }
             });
             console.log($widget);
+            console.log($widget.options.jsonConfig.getattribute);
             return html;
         },
 
